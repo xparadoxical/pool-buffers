@@ -24,21 +24,21 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 	public readonly long Length => _last.RunningIndex + _last.Length;
 
 	/// <summary>Initializes the sequence with a single array.</summary>
-	/// <param name="initialSize">Size of the first array. Must be at least 1.</param>
-	public PooledSequence(int initialSize)
+	/// <param name="minInitialSize">Minimum size of the first array. Must be at least 1.</param>
+	public PooledSequence(int minInitialSize)
 	{
-		ArgumentOutOfRangeException.ThrowIfLessThan(initialSize, 1);
+		ArgumentOutOfRangeException.ThrowIfLessThan(minInitialSize, 1);
 
-		_first = _last = new(ArrayPool<T>.Shared.Rent(initialSize));
+		_first = _last = new(ArrayPool<T>.Shared.Rent(minInitialSize));
 	}
 
 	/// <summary>Rents another array and adds it to the sequence.</summary>
-	/// <param name="size">Size of the next array. Must be at least 1.</param>
-	public void Grow(int size)
+	/// <param name="minSize">Minimum size of the next array. Must be at least 1.</param>
+	public void Grow(int minSize)
 	{
-		ArgumentOutOfRangeException.ThrowIfLessThan(size, 1);
+		ArgumentOutOfRangeException.ThrowIfLessThan(minSize, 1);
 
-		_last.Next = new(ArrayPool<T>.Shared.Rent(size))
+		_last.Next = new(ArrayPool<T>.Shared.Rent(minSize))
 		{
 			RunningIndex = _last.RunningIndex + _last.Length
 		};
@@ -47,7 +47,7 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 
 	/// <summary>Gets a span to the array that's at the specified element index in the sequence.</summary>
 	/// <param name="elementIndex">Index of an element of the sequence.</param>
-	/// <returns>A span of non-zero length.</returns>
+	/// <returns>A span at least <paramref name="elementIndex"/> items long.</returns>
 	public readonly Span<T> GetSpan(long elementIndex)
 	{
 		ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(elementIndex, _last.RunningIndex + _last.Length);
