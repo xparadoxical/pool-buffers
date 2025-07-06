@@ -1,6 +1,7 @@
 using System.Buffers;
 using System.Collections;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace PoolBuffers;
 
@@ -73,7 +74,7 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 		var segment = _first;
 		while (true)
 		{
-			ArrayPool<T>.Shared.Return(segment.Array, true);
+			ArrayPool<T>.Shared.Return(segment.Array, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
 
 			if (segment.Next is not SequenceSegment<T> next)
 				break;
