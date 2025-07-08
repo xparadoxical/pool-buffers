@@ -82,26 +82,40 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 		}
 	}
 
-	public readonly IEnumerator<Span<T>> GetEnumerator() => new SequenceEnumerator(_first);
+	public readonly SequenceEnumerator GetEnumerator() => new(in this);
 
+	readonly IEnumerator<Span<T>> IEnumerable<Span<T>>.GetEnumerator() => GetEnumerator();
 	readonly IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	class SequenceEnumerator(SequenceSegment<T> current) : IEnumerator<Span<T>>
+	public struct SequenceEnumerator(in PooledSequence<T> seq) : IEnumerator<Span<T>>
 	{
-		public Span<T> Current => current.Array.AsSpan();
+		private SequenceSegment<T> _current = seq._first;
+		private bool _beforeFirst = true;
+
+		public readonly Span<T> Current => _current.Array.AsSpan();
 
 		public bool MoveNext()
 		{
-			if (current.Next is not SequenceSegment<T> next)
-				return false;
+			if (_beforeFirst)
+			{
+				_beforeFirst = false;
+				return true;
+			}
 
-			current = next;
-			return true;
+			if (_current.Next is SequenceSegment<T> next)
+			{
+				_current = next;
+				return true;
+			}
+
+			_current = null!;
+			return false;
 		}
 
-		public void Dispose() => current = null!;
+		public void Dispose() => _current = null!;
 
-		object IEnumerator.Current => throw new NotSupportedException("Can't box a Span.");
+		readonly Span<T> IEnumerator<Span<T>>.Current => Current;
+		readonly object IEnumerator.Current => throw new NotSupportedException("Can't box a Span.");
 		void IEnumerator.Reset() => throw new NotSupportedException();
 	}
 }
