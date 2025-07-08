@@ -22,6 +22,7 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 	private readonly SequenceSegment<T> _first;
 	private SequenceSegment<T> _last;
 
+	/// <summary>The number of items this sequence can have.</summary>
 	public readonly long Length => _last.RunningIndex + _last.Length;
 
 	/// <summary>Initializes the sequence with a single array.</summary>
