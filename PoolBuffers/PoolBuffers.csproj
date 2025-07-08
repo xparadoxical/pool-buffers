@@ -4,6 +4,21 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="packing">
+    <PackageId>PoolBuffers</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>xparadoxical</Authors>
+    <Description>Provides a sequence type backed by pooled arrays.</Description>
+    <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
+    <PackageTags>pool pooling array linked list</PackageTags>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <DebugType>embedded</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn Condition="$(Configuration) != 'Release'">$(NoWarn);CS1591;CS1573;CS1712</NoWarn>
   </PropertyGroup>
 
 </Project>
