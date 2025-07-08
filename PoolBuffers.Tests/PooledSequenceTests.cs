@@ -54,4 +54,20 @@ public class PooledSequenceTests
 			() => Assert.Throws<ArgumentOutOfRangeException>(() => seq.GetSpan(seq.Length + 5)),
 			() => Assert.Throws<ArgumentOutOfRangeException>(() => seq.GetSpan(-1)));
 	}
+
+	[Fact]
+	public void Enumeration_Works()
+	{
+		var seq = new PooledSequence<int>(1);
+		seq.Grow(5);
+
+		int i = 0;
+		foreach (var span in seq)
+		{
+			Assert.True(span.Length > 0);
+			i++;
+		}
+
+		Assert.Equal(2, i);
+	}
 }
