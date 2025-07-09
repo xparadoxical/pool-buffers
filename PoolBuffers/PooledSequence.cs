@@ -69,7 +69,10 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 		throw new UnreachableException();
 	}
 
-	/// <summary>Returns and clears all arrays to the pool.</summary>
+	/// <summary>
+	/// Returns and clears all arrays to the pool,
+	/// clearing them when <typeparamref name="T"/> is not <see langword="unmanaged"/>.
+	/// </summary>
 	public readonly void Dispose()
 	{
 		var segment = _first;
