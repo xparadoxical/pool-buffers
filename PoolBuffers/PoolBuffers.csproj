@@ -12,7 +12,7 @@
     <Version>1.0.0</Version>
     <Authors>xparadoxical</Authors>
     <Description>Provides some collections backed by pooled arrays.</Description>
-    <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>pool pooling array buffer</PackageTags>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -20,5 +20,9 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn Condition="$(Configuration) != 'Release'">$(NoWarn);CS1591;CS1573;CS1712</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" Visible="false" />
+  </ItemGroup>
 
 </Project>
