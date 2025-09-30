@@ -4,28 +4,36 @@ using System.Runtime.CompilerServices;
 
 namespace PoolBuffers;
 
-/// <summary>Growable buffer, backed by an array from <see cref="ArrayPool{T}"/>.</summary>
+/// <summary>
+/// Growable buffer backed by an array from <see cref="ArrayPool{T}"/>.
+/// Includes manual length tracking support.
+/// </summary>
 public sealed class PooledBuffer<T>(int minCapacity) : IEnumerable<T>, IDisposable
 {
 	private T[] _array = ArrayPool<T>.Shared.Rent(minCapacity);
 
+	/// <summary>Initializes the buffer and its length with <paramref name="initialData"/>.</summary>
 	public PooledBuffer(ReadOnlySpan<T> initialData) : this(initialData.Length)
 	{
 		initialData.CopyTo(_array);
-		DataLength = initialData.Length;
+		Length = initialData.Length;
 	}
 
+	/// <summary>Span representing the entire buffer.</summary>
 	public Span<T> Span => _array.AsSpan();
 
 	public ref T this[int i] => ref _array[i];
 
 	public Span<T> this[Range r] => _array[r];
 
+	/// <summary>The number of elements this buffer can hold.</summary>
 	public int Capacity => _array.Length;
 
-	public int DataLength { get; set; }
+	/// <summary>Length of the valid area of the buffer.</summary>
+	public int Length { get; set; }
 
-	public Span<T> DataSpan => _array.AsSpan(0, DataLength);
+	/// <summary>Span to the valid area of the buffer, located at the start of the backing array.</summary>
+	public Span<T> DataSpan => _array.AsSpan(0, Length);
 
 	public void Grow(int byAtLeast)
 	{

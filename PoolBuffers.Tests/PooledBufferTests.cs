@@ -2,22 +2,23 @@ namespace PoolBuffers.Tests;
 public class PooledBufferTests
 {
 	[Fact]
-	public void Grow_Works()
+	public void EnsureCapacity_Works()
 	{
 		var buf = new PooledBuffer<int>(1);
+		var minCapacity = 6;
 
-		var length = buf.Capacity;
-		buf.Grow(5);
-		var newLength = buf.Capacity;
+		var capacity = buf.Capacity;
+		buf.EnsureCapacity(minCapacity);
+		var newCapacity = buf.Capacity;
 
-		Assert.True(newLength >= length + 5);
+		Assert.True(newCapacity >= minCapacity);
 	}
 
 	[Fact]
-	public void Grow_Throws_ForNegativeLengths()
+	public void EnsureCapacity_Throws_ForNegativeArgs()
 	{
 		var buf = new PooledBuffer<int>(1);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() => buf.Grow(-5));
+		Assert.Throws<ArgumentOutOfRangeException>(() => buf.EnsureCapacity(-5));
 	}
 }
