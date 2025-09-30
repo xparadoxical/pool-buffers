@@ -11,9 +11,9 @@
     <PackageId>PoolBuffers</PackageId>
     <Version>1.0.0</Version>
     <Authors>xparadoxical</Authors>
-    <Description>Provides a sequence type backed by pooled arrays.</Description>
+    <Description>Provides some collections backed by pooled arrays.</Description>
     <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
-    <PackageTags>pool pooling array linked list</PackageTags>
+    <PackageTags>pool pooling array buffer</PackageTags>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>embedded</DebugType>
