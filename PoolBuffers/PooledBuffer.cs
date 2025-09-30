@@ -54,8 +54,8 @@ public sealed class PooledBuffer<T>(int minCapacity) : IEnumerable<T>, IDisposab
 			Grow(minCapacity - _array.Length);
 	}
 
-	public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)_array).GetEnumerator();
-	IEnumerator IEnumerable.GetEnumerator() => _array.GetEnumerator();
+	public IEnumerator<T> GetEnumerator() => _array.Take(Length).GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	/// <summary>Returns the array to the pool, clearing it when <typeparamref name="T"/> is not <see langword="unmanaged"/>.</summary>
 	public void Dispose()
