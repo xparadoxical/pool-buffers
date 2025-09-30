@@ -6,9 +6,9 @@ public class PooledBufferTests
 	{
 		var buf = new PooledBuffer<int>(1);
 
-		var length = buf.Length;
+		var length = buf.Capacity;
 		buf.Grow(5);
-		var newLength = buf.Length;
+		var newLength = buf.Capacity;
 
 		Assert.True(newLength >= length + 5);
 	}
