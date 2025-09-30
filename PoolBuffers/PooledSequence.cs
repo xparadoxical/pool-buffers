@@ -1,10 +1,10 @@
+#if NET9_0_OR_GREATER
 using System.Buffers;
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace PoolBuffers;
-
 internal class SequenceSegment<T>(T[] array)
 {
 	public T[] Array { get; } = array;
@@ -123,3 +123,4 @@ public struct PooledSequence<T> : IEnumerable<Span<T>>, IDisposable
 		void IEnumerator.Reset() => throw new NotSupportedException();
 	}
 }
+#endif

@@ -1,3 +1,4 @@
+#if NET9_0_OR_GREATER
 namespace PoolBuffers.Tests;
 
 public class PooledSequenceTests
@@ -71,3 +72,4 @@ public class PooledSequenceTests
 		Assert.Equal(2, i);
 	}
 }
+#endif
