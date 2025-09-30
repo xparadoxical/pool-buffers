@@ -35,7 +35,7 @@ public sealed class PooledBuffer<T>(int minCapacity) : IEnumerable<T>, IDisposab
 	/// <summary>Span to the valid area of the buffer, located at the start of the backing array.</summary>
 	public Span<T> DataSpan => _array.AsSpan(0, Length);
 
-	public void Grow(int byAtLeast)
+	private void Grow(int byAtLeast)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegative(byAtLeast);
 
@@ -48,6 +48,8 @@ public sealed class PooledBuffer<T>(int minCapacity) : IEnumerable<T>, IDisposab
 	/// <summary>Resizes the buffer if it's smaller than <paramref name="minCapacity"/>.</summary>
 	public void EnsureCapacity(int minCapacity)
 	{
+		ArgumentOutOfRangeException.ThrowIfNegative(minCapacity);
+
 		if (_array.Length < minCapacity)
 			Grow(minCapacity - _array.Length);
 	}
